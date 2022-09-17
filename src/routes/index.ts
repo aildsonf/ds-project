@@ -1,4 +1,4 @@
-import { UsersRoutes } from "./users.routes";
-import { ProductsRoutes } from "./products.routes";
+import { productsRouter } from "./products.routes";
+import { usersRouter } from "./users.routes";
 
-export { UsersRoutes, ProductsRoutes };
+export { usersRouter, productsRouter };

@@ -1,22 +1,12 @@
-import express, { Request, Response } from "express";
+import { Router } from "express";
+import { UsersController } from "../controllers/UsersController";
 
-export class UsersRoutes {
-	public routes(app: express.Application): void {
-		app.route("/users")
-			.get((req: Request, res: Response) => {
-				res.status(200).send("GET ok");
-			})
-			.post((req: Request, res: Response) => {
-				res.status(200).send("POST ok");
-			})
-			.patch((req: Request, res: Response) => {
-				res.status(200).send("PATCH ok");
-			})
-			.put((req: Request, res: Response) => {
-				res.status(200).send("PUT ok");
-			})
-			.delete((req: Request, res: Response) => {
-				res.status(200).send("DELETE ok");
-			});
-	}
-}
+export const usersRouter: Router = Router();
+const controller: UsersController = new UsersController();
+
+usersRouter
+	.get("/users", controller.index)
+	.get("/users/:login", controller.view)
+	.post("/users", controller.create)
+	.put("/users/:login", controller.update)
+	.delete("/users/:login", controller.delete);

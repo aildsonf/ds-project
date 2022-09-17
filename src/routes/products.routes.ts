@@ -1,22 +1,12 @@
-import express, { Request, Response } from "express";
+import { Router } from "express";
+import { ProductsController } from "../controllers/ProductsController";
 
-export class ProductsRoutes {
-	public routes(app: express.Application): void {
-		app.route("/products")
-			.get((req: Request, res: Response) => {
-				res.status(200).send("GET ok");
-			})
-			.post((req: Request, res: Response) => {
-				res.status(200).send("POST ok");
-			})
-			.patch((req: Request, res: Response) => {
-				res.status(200).send("PATCH ok");
-			})
-			.put((req: Request, res: Response) => {
-				res.status(200).send("PUT ok");
-			})
-			.delete((req: Request, res: Response) => {
-				res.status(200).send("DELETE ok");
-			});
-	}
-}
+export const productsRouter: Router = Router();
+const controller: ProductsController = new ProductsController();
+
+productsRouter
+	.get("/products", controller.index)
+	.get("/products/:id", controller.view)
+	.post("/products", controller.create)
+	.put("/products/:id", controller.update)
+	.delete("/products/:id", controller.delete);

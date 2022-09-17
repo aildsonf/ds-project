@@ -1,11 +1,11 @@
-export interface ProductInterface {
+export type ProductInterface = {
 	id: string;
 	name: string;
 	type: string;
 	brand: string;
 	weight: number;
 	price: number;
-}
+};
 
 export class Product implements ProductInterface {
 	private _id: string;
@@ -15,52 +15,56 @@ export class Product implements ProductInterface {
 	private _weight: number;
 	private _price: number;
 
-	constructor(id: string, name: string, type: string, brand: string, weight: number, price: number) {
-		this._id = id,
-		this._name = name,
-		this._type = type;
-		this._brand = brand,
-		this._weight = weight;
-		this._price = price;
+	constructor(product: ProductInterface) {
+		this._id = product.id;
+		this._name = product.name;
+		this._type = product.type;
+		this._brand = product.brand;
+		this._weight = product.weight;
+		this._price = product.price;
 	}
 
-	get id(): string {
+	get id() {
 		return this._id;
 	}
 
-	get name(): string {
+	get name() {
 		return this._name;
 	}
+
 	set name(name: string) {
 		this._name = name;
 	}
 
-	get type(): string {
+	get type() {
 		return this._type;
 	}
+
 	set type(type: string) {
 		this._type = type;
 	}
 
-	get brand(): string {
+	get brand() {
 		return this._brand;
 	}
+
 	set brand(brand: string) {
 		this._brand = brand;
 	}
 
-	get weight(): number {
+	get weight() {
 		return this._weight;
 	}
+
 	set weight(weight: number) {
 		this._weight = weight;
 	}
 
-	get price(): number {
+	get price() {
 		return this._price;
 	}
+
 	set price(price: number) {
 		this._price = price;
 	}
 }
-
