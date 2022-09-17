@@ -4,11 +4,11 @@
 	"description": "Initial setup for Distributed Systems project - UFRPE - CC",
 	"main": "index.js",
 	"scripts": {
-		"dev": "ts-node build/index.js",
 		"build": "tsc",
-		"start": "tsc && nodemon build/index.js",
+		"dev": "yarn build && nodemon --watch src/** --ext ts,json --exec ts-node src/index.ts",
+		"start": "ts-node build/index.js",
 		"lint": "eslint src --ext .ts,.js",
-		"lint:fix": "eslint src --ext .ts,.js --fix",
+		"lint:fix": "yarn lint --fix",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
