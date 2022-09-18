@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { Application } from "express";
-import { productsRouter, usersRouter } from "./routes";
+import { productsRouter, stockRouter, usersRouter } from "./routes";
 
 export class Server {
 	public server: Application;
@@ -12,5 +12,6 @@ export class Server {
 
 		this.server.use(usersRouter);
 		this.server.use(productsRouter);
+		this.server.use(stockRouter);
 	}
 }
