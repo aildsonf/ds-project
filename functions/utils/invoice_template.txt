@@ -1,0 +1,27 @@
+                    <*SELLER_NAME*>
+                   CNPJ: <SELLER_ID>
+                    <SELLER_ADRESS>      
+              Telefone: <SELLER_CONTACT>
+
+           Nota Fiscal de Consumidor Eletrônica
+----------------------------------------------------------
+Código    Qtd.    Descri.    Vlr.Unit.    Desc.    Vlr.Tot
+----------------------------------------------------------
+<PRODUCT_ID> <QTT> <PRODUCT_NAME> <PRODUCT_VALUE> <DISCOUNT> <TOTAL_VALUE>
+----------------------------------------------------------
+Qtd. Total de Itens                       <TOTAL_QUANTITY>
+Valor Total R$                            <PRODUCTS_VALUE>
+Desconto                                        <DISCOUNT>
+*Valor a Pagar R$*                        <*PAYING_VALUE*>
+FORMA PAGAMENTO                              VALOR PAGO R$
+<PAYMENT_TYPE>                              <PAID_VALUE>
+----------------------------------------------------------
+
+            <*BUYER_ID*>
+            *NFC-e nº:<NUMBER_NFCe> - Série: 777*
+            *<TIMESTAMP> - Via Consumidor*
+            Protocolo autorização: <AUTH_PROTOCOL>
+            Data autorização: <TIMESTAMP>
+
+Fornecedor: <PROVIDER_NAME>
+Emitido por AGJ - Software Corporate
