@@ -1,12 +1,20 @@
-from datetime import datetime
-from tokenize import Double
-from functions.utils.numbers import generate    
+import functions.invoice.generate as generate_invoice 
+import functions.utils.validate as validate
 
-def make_purchase(product_id, seller_id, seller_contact, buyer_id, quantity, value, discount):
-    timestamp = str(datetime.now())
-    transaction_id = generate(size=9)
-    nfce_number = generate(size=15)
+from functions.utils.errorhandling import send_error
+
+def make_purchase(item_dict):
     
-    #TODO: criar nota fiscal, registrar no BD e retornar para front
+    '''if item_dict['payment_type'] == 'Boleto':
+        
+        ticket_numer = str(generate(size=16))+str(generate(size=16))+str(generate(size=16))'''
+    
+    if not (validate.credit_card_number(item_dict['credit_card_number']) and validate.card_verification_number(item_dict['cvv'])):
+        send_error(500, "Erro em dados do cartão de crédito. Pagamento rejeitado!")
+    
+    if item_dict['buyer_id'] != 'Não informado' and not (validate.cpf(item_dict['buyer_id']) or validate.cnpj(item_dict['buyer_id']))   :
+        item_dict['buyer_id'] = "Não informado"
 
-    return None
+    invoice = generate_invoice.from_purchase(item_dict)
+
+    return invoice

@@ -5,12 +5,7 @@
         "address": "Rua Sem Nome, 555 - BAIRRO ALGUM - Recife - PE",
         "contact": "(81) 99999-8888"
     },
-    "buyer":{
-        "id": "111.222.333-44"
-    },
-    "provider":{
-        "name": "P&P Distribuidora"
-    },
+    "buyer_id": "111.222.333-44",
     "products":[
         {
             "product_id": 1234,

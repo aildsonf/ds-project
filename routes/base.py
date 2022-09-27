@@ -1,9 +1,8 @@
 from fastapi import APIRouter
 
-#IMPORT ROUTES HERE
+from routes.transactionroutes import transaction_routes
 
 api_router = APIRouter()
 
-#api_router.include_router() HERE
-
+api_router.include_router(transaction_routes)
 
