@@ -1,12 +1,11 @@
-import { Router } from "express";
-import { UsersController } from "../controllers/UsersController";
+import { Application } from "express";
+import {controller} from "../controllers/UsersController";
 
-export const usersRouter: Router = Router();
-const controller: UsersController = new UsersController();
+export class UsersRoutes {
+	public routes(server: Application): void {
+		server.route('/users').get(controller.index).post(controller.create);
+		server.route('/users/:cpf').get(controller.view).put(controller.update).delete(controller.delete);
+	}
+}
 
-usersRouter
-	.get("/users", controller.index)
-	.get("/users/:login", controller.view)
-	.post("/users", controller.create)
-	.put("/users/:login", controller.update)
-	.delete("/users/:login", controller.delete);
+
