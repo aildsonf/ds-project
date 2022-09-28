@@ -1,74 +1,73 @@
 import { Request, Response } from "express";
-import { User } from "../models/User";
+import { User, UserInterface } from "../models/user.model";
 
-// TODO: implement database
-const users: User[] = [];
-
-export class UsersController {
+// TODO: add verifications
+class UsersController {
 	public index(req: Request, res: Response) {
-		return res.status(200).json(users);
+		User.find((error, users) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(200).json(users)
+		})
 	}
 
 	public view(req: Request, res: Response) {
-		const { login } = req.params;
-		const user = users.find((user) => user.login === login);
+		const {cpf} = req.body;
 
-		if (!user) {
-			return res.status(404).json("user not found");
-		}
-
-		return res.status(200).json(user);
-	}
-
-	public create(req: Request, res: Response) {
-		const { login, password, adminRights, status }: User = req.body;
-		const hasUser = Boolean(users.find((user) => user.login === login));
-
-		if (!(login && password)) {
-			return res.status(400).json("missing required params");
-		} else if (hasUser) {
-			return res.status(400).json("user already exists");
-		}
-
-		const user = new User({ login, password, adminRights, status });
-
-		// TODO: create user
-		users.push(user);
-
-		return res.status(201).json(user);
-	}
-
-	public update(req: Request, res: Response) {
-		const { login, password, adminRights, status }: User = req.body;
-		const user = users.find((user) => user.login === login);
-
-		if (!user) {
-			return res.status(404).json("user not found");
-		}
-
-		const _login = login || user.login;
-		const _password = password || user.password;
-		const _adminRights = adminRights || user.adminRights;
-		const _status = status || user.status;
-
-		// TODO: update user
-		return res.status(200).json({
-			_login,
-			_password,
-			_adminRights,
-			_status,
+		User.findOne({cpf}, undefined, (error, user) => {
+			if(error) {
+				return res.status(404).json(error);
+			}
+			return res.status(200).json(user)
 		});
 	}
 
-	public delete(req: Request, res: Response) {
-		const { login } = req.params;
-		const user = users.find((user) => user.login === login);
+	public async create(req: Request, res: Response) {
+		const {cpf} = req.body
+		const hasUser = await User.findOne({cpf});
 
-		if (!user) {
-			return res.status(404).json("user not found");
+		if(hasUser) {
+			return res.status(400).json(`User with CPF ${req.body.cpf} already exists`);
 		}
 
-		// TODO: remove user
-		return res.status(200).json(user);
+		const newUser = new User(req.body);
+
+		newUser.save((error, user) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(201).json(user);
+		});
+	}
+
+	public async update(req: Request, res: Response) {
+		const {cpf} = req.params;
+		const hasUser = await User.findOne({cpf});
+
+		if(!hasUser) {
+			return res.status(404).json(`User with CPF ${cpf} not found`)
+		}
+
+		User.findOneAndUpdate({cpf}, req.body, {new: true}, (error, user) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(200).json(user);
+		})
+	}
+
+	public delete(req: Request, res: Response) {
+		const {cpf} = req.params;
+
+		User.findOneAndDelete({cpf}, undefined, (error, user) => {
+			if(error) {
+				return res.status(404).json(error);
+			}
+			return res.status(200).json(`Removed ${user?.id}`);
+		});
 	}
 }
+
+const controller: UsersController = new UsersController();
+export {controller};

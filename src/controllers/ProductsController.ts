@@ -1,88 +1,74 @@
 import { Request, Response } from "express";
-import { Product } from "../models/Product";
+import { Product, ProductInterface } from "../models/product.model";
 
-// TODO: implement database
-const products: Product[] = [];
+// TODO: add verifications
 
-export class ProductsController {
+class ProductsController {
 	public index(req: Request, res: Response) {
-		return res.status(200).json(products);
+		Product.find((error, products) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(200).json(products)
+		})
 	}
 
 	public view(req: Request, res: Response) {
-		const { id } = req.params;
-		const product = products.find((product) => product.id === id);
+		const {barcode} = req.body;
 
-		if (!product) {
-			return res.status(404).json("product not found");
-		}
-
-		return res.status(200).json(product);
+		Product.findOne({barcode}, undefined, (error, product) => {
+			if(error) {
+				return res.status(404).json(error);
+			}
+			return res.status(200).json(product)
+		});
 	}
 
-	public create(req: Request, res: Response) {
-		const { name, type, brand, weight, price }: Omit<Product, "id"> = req.body;
-		const hasProduct = Boolean(
-			products.find((product) => product.name === name)
-		);
+	public async create(req: Request, res: Response) {
+		const {barcode} = req.body
+		const hasProduct = await Product.findOne({barcode});
 
-		if (!(name && type && brand && weight && price)) {
-			return res.status(400).json("missing required params");
-		} else if (hasProduct) {
-			return res.status(400).json("product already exists");
+		if(hasProduct) {
+			return res.status(400).json(`Product with barcode ${req.body.barcode} already exists`);
 		}
 
-		const productId = `${new Date().getMilliseconds()}-${name}`;
-		const product = new Product({
-			id: productId,
-			name,
-			type,
-			brand,
-			weight,
-			price,
+		const newProduct = new Product(req.body);
+
+		newProduct.save((error, product) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(201).json(product);
 		});
-
-		// TODO: create product
-		products.push(product);
-
-		return res.status(201).json(product);
 	}
 
-	public update(req: Request, res: Response) {
-		const { id } = req.params;
-		const { name, type, brand, weight, price }: Product = req.body;
-		const product = products.find((product) => product.id === id);
+	public async update(req: Request, res: Response) {
+		const {barcode} = req.params;
+		const hasProduct = await Product.findOne({barcode});
 
-		if (!product) {
-			return res.status(404).json("product not found");
+		if(!hasProduct) {
+			return res.status(404).json(`Product with barcode ${barcode} not found`)
 		}
 
-		const _name = name || product.name;
-		const _type = type || product.type;
-		const _brand = brand || product.brand;
-		const _weight = weight || product.weight;
-		const _price = price || product.price;
-
-		// TODO: update product
-		return res.status(200).json({
-			id,
-			_name,
-			_type,
-			_brand,
-			_weight,
-			_price,
-		});
+		Product.findOneAndUpdate({barcode}, req.body, {new: true}, (error, product) => {
+			if(error) {
+				return res.status(400).json(error);
+			}
+			return res.status(200).json(product);
+		})
 	}
 
 	public delete(req: Request, res: Response) {
-		const { id } = req.params;
-		const product = products.find((product) => product.id === id);
+		const {barcode} = req.params;
 
-		if (!product) {
-			return res.status(404).json("product not found");
-		}
-
-		// TODO: remove product
-		return res.status(200).json(product);
+		Product.findOneAndDelete({barcode}, undefined, (error, product) => {
+			if(error) {
+				return res.status(404).json(error);
+			}
+			return res.status(200).json(`Removed ${product?.id}`);
+		});
 	}
 }
+
+const controller: ProductsController = new ProductsController();
+export {controller};
