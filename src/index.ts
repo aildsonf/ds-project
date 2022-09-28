@@ -1,26 +1,13 @@
-import * as dotEnv from "dotenv";
 import { Server } from "./server";
-
-dotEnv.config();
-
-if (process.env.PORT == null) {
-	process.exit(1);
-}
-
-const PORT: number = parseInt(process.env.PORT, 10);
+import configuration from './configuration';
+import logger from "./helpers/logger";
 
 const server = new Server().server;
 
 try {
-	server.listen(PORT, () => {
-		console.log({
-			serverStatus: "UP",
-			message: `Server listening on :${PORT}`,
-		});
+	server.listen(configuration.PORT, () => {
+		logger.info(`Server listening at http://localhost:${configuration.PORT}`);
 	});
 } catch (error) {
-	console.error({
-		serverStatus: "DOWN",
-		message: error,
-	});
+	logger.error(error);
 }
