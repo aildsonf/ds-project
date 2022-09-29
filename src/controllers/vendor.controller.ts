@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { isCNPJValid } from "../helpers/validators";
 import { Vendor, VendorInterface } from "../models/vendor.model";
 
-// TODO: add validations
 export class VendorController {
 	public index(req: Request, res: Response) {
 		Vendor.find((error, vendor) => {
@@ -15,9 +15,13 @@ export class VendorController {
 	public view(req: Request, res: Response) {
 		const {cnpj} = req.params;
 
+		if(!isCNPJValid(cnpj)) {
+			return res.status(400).json(`CNPJ ${cnpj} is invalid`)
+		}
+
 		Vendor.findOne({cnpj}, undefined, (error, vendor) => {
 			if(error) {
-				return res.status(404).json(error);
+				return res.status(500).json(error);
 			}
 			return res.status(200).json(vendor)
 		});
@@ -25,14 +29,17 @@ export class VendorController {
 
 	public async create(req: Request, res: Response) {
 		const {cnpj} = req.body
-		const hasVendor = await Vendor.findOne({cnpj});
 
+		if(!isCNPJValid(cnpj)) {
+			return res.status(400).json(`CNPJ ${cnpj} is invalid`)
+		}
+
+		const hasVendor = await Vendor.findOne({cnpj});
 		if(hasVendor) {
 			return res.status(400).json(`Vendor with CNPJ ${cnpj} already exists`);
 		}
 
 		const newVendor = new Vendor(req.body);
-
 		newVendor.save((error, vendor) => {
 			if(error) {
 				return res.status(400).json(error);
@@ -43,8 +50,12 @@ export class VendorController {
 
 	public async update(req: Request, res: Response) {
 		const {cnpj} = req.params;
-		const hasVendor = await Vendor.findOne({cnpj});
 
+		if(!isCNPJValid(cnpj)) {
+			return res.status(400).json(`CNPJ ${cnpj} is invalid`)
+		}
+
+		const hasVendor = await Vendor.findOne({cnpj});
 		if(!hasVendor) {
 			return res.status(404).json(`Vendor with CNPJ ${cnpj} not found`)
 		}
@@ -57,8 +68,17 @@ export class VendorController {
 		})
 	}
 
-	public delete(req: Request, res: Response) {
+	public async delete(req: Request, res: Response) {
 		const {cnpj} = req.params;
+
+		if(!isCNPJValid(cnpj)) {
+			return res.status(400).json(`CNPJ ${cnpj} is invalid`)
+		}
+
+		const hasVendor = await Vendor.findOne({cnpj});
+		if(!hasVendor) {
+			return res.status(404).json(`Vendor with CNPJ ${cnpj} not found`)
+		}
 
 		Vendor.findOneAndDelete({cnpj}, undefined, (error, vendor) => {
 			if(error) {

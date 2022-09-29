@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { Product, ProductInterface } from "../models/product.model";
 
-// TODO: add verifications
-
 class ProductsController {
 	public index(req: Request, res: Response) {
 		Product.find((error, products) => {
@@ -26,14 +24,13 @@ class ProductsController {
 
 	public async create(req: Request, res: Response) {
 		const {barcode} = req.body
-		const hasProduct = await Product.findOne({barcode});
 
+		const hasProduct = await Product.findOne({barcode});
 		if(hasProduct) {
 			return res.status(400).json(`Product with barcode ${req.body.barcode} already exists`);
 		}
 
 		const newProduct = new Product(req.body);
-
 		newProduct.save((error, product) => {
 			if(error) {
 				return res.status(400).json(error);
@@ -44,8 +41,8 @@ class ProductsController {
 
 	public async update(req: Request, res: Response) {
 		const {barcode} = req.params;
-		const hasProduct = await Product.findOne({barcode});
 
+		const hasProduct = await Product.findOne({barcode});
 		if(!hasProduct) {
 			return res.status(404).json(`Product with barcode ${barcode} not found`)
 		}
@@ -58,8 +55,13 @@ class ProductsController {
 		})
 	}
 
-	public delete(req: Request, res: Response) {
+	public async delete(req: Request, res: Response) {
 		const {barcode} = req.params;
+
+		const hasProduct = await Product.findOne({barcode});
+		if(!hasProduct) {
+			return res.status(404).json(`Product with barcode ${barcode} not found`)
+		}
 
 		Product.findOneAndDelete({barcode}, undefined, (error, product) => {
 			if(error) {
