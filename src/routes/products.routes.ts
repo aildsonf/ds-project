@@ -1,5 +1,5 @@
 import { Application } from "express";
-import { controller } from "../controllers/ProductsController";
+import { controller } from "../controllers/products.controller";
 
 export class ProductsRoutes {
 	public routes(server: Application): void {

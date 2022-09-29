@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Schema as ProductSchema } from "../schemas/product.schema";
 
-export type ProductInterface = {
+export interface ProductInterface {
 	name: string;
 	barcode: string;
 	brand: string;

@@ -14,7 +14,7 @@ class ProductsController {
 	}
 
 	public view(req: Request, res: Response) {
-		const {barcode} = req.body;
+		const {barcode} = req.params;
 
 		Product.findOne({barcode}, undefined, (error, product) => {
 			if(error) {
@@ -65,7 +65,7 @@ class ProductsController {
 			if(error) {
 				return res.status(404).json(error);
 			}
-			return res.status(200).json(`Removed ${product?.id}`);
+			return res.status(200).json(`Removed ${product?._id}`);
 		});
 	}
 }
