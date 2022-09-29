@@ -1,5 +1,7 @@
+import { CartRoutes } from "./cart.route";
 import { ProductsRoutes } from "./products.routes";
-import { stockRouter } from "./stock.routes";
+import { StockRoutes } from "./stock.routes";
 import { UsersRoutes } from "./users.routes";
+import { VendorRoutes } from "./vendor.routes"
 
-export { UsersRoutes, ProductsRoutes, stockRouter };
+export { CartRoutes, UsersRoutes, ProductsRoutes, StockRoutes, VendorRoutes };
