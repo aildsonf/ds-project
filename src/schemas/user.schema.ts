@@ -1,11 +1,6 @@
-import { randomUUID } from "crypto";
 import mongoose from "mongoose";
 
 export const Schema = new mongoose.Schema({
-	uuid: {
-		type: String,
-		default: randomUUID()
-	},
 	name: {
 		type: String,
 		required: true,
@@ -14,13 +9,16 @@ export const Schema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	address: {
+	password: {
 		type: String,
-		default: ''
+		required: true
 	},
-	contact: {
+	type: {
 		type: String,
-		default: '',
+		required: true
+	},
+	vendorCnpj: {
+		type: String,
 	},
 	created: {
 		type: Date,

@@ -13,7 +13,7 @@ class UsersController {
 	}
 
 	public view(req: Request, res: Response) {
-		const {cpf} = req.body;
+		const {cpf} = req.params;
 
 		User.findOne({cpf}, undefined, (error, user) => {
 			if(error) {
@@ -64,7 +64,7 @@ class UsersController {
 			if(error) {
 				return res.status(404).json(error);
 			}
-			return res.status(200).json(`Removed ${user?.id}`);
+			return res.status(200).json(`Removed ${user?._id}`);
 		});
 	}
 }

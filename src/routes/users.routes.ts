@@ -1,5 +1,5 @@
 import { Application } from "express";
-import {controller} from "../controllers/UsersController";
+import {controller} from "../controllers/users.controller";
 
 export class UsersRoutes {
 	public routes(server: Application): void {
