@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ProductInterface } from "./product.model";
+import {Schema as CartSchema} from "../schemas/cart.schema";
 
 export type CartType = {
 	productCode: Pick<ProductInterface, 'barcode'>,
@@ -13,6 +14,6 @@ export interface CartInterface {
 	totalValue: number;
 }
 
-const Cart = mongoose.model('Cart');
+const Cart = mongoose.model('Cart', CartSchema);
 
 export {Cart}
