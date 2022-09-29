@@ -1,4 +1,4 @@
-import { CartRoutes } from "./cart.route";
+import { CartRoutes } from "./cart.routes";
 import { ProductsRoutes } from "./products.routes";
 import { StockRoutes } from "./stock.routes";
 import { UsersRoutes } from "./users.routes";
