@@ -1,12 +1,9 @@
-import { Router } from "express";
-import { StockController } from "../controllers/StockController";
+import { Application } from "express";
+import {controller} from "../controllers/stock.controller";
 
-export const stockRouter: Router = Router();
-const controller: StockController = new StockController();
-
-stockRouter
-	.get("/products", controller.index)
-	.get("/products/:id", controller.view)
-	.post("/products", controller.insert)
-	.put("/products/:id", controller.update)
-	.delete("/products/:id", controller.delete);
+export class StockRoutes {
+	public routes(server: Application): void {
+		server.route('/stock').get(controller.index).post(controller.create);
+		server.route('/stock/:uuid').get(controller.view).put(controller.update).delete(controller.delete);
+	}
+}
