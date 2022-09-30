@@ -34,11 +34,11 @@ class UsersController {
 
 		const nameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
 		if (!nameRegex.test(name)) {
-			res.status(400).json('Invalid name');
+			return res.status(400).json('Invalid name');
 		}
 
 		if (password.length < 8) {
-			res.status(400).json('Password length must contains at least 8 characters');
+			return res.status(400).json('Password length must contains at least 8 characters');
 		}
 
 		if (!isCPFValid(cpf)) {
@@ -87,11 +87,11 @@ class UsersController {
 
 		const nameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
 		if (!nameRegex.test(name)) {
-			res.status(400).json('Invalid name');
+			return res.status(400).json('Invalid name');
 		}
 
 		if (password.length < 8) {
-			res.status(400).json('Password length must contains at least 8 characters');
+			return res.status(400).json('Password length must contains at least 8 characters');
 		}
 
 		if (!isCPFValid(cpf)) {
