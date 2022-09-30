@@ -1,4 +1,5 @@
 import type {Request, Response} from 'express';
+import logger from '../helpers/logger';
 import {isCNPJValid, isCPFValid} from '../helpers/validators';
 import type {UserInterface} from '../models/UserModel';
 import {UserTypes} from '../models/UserModel';
@@ -13,7 +14,7 @@ class UsersController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async view(req: Request, res: Response) {
@@ -25,7 +26,7 @@ class UsersController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async create(req: Request, res: Response) {

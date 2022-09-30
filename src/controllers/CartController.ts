@@ -1,4 +1,5 @@
 import type {Request, Response} from 'express';
+import logger from '../helpers/logger';
 import {isCNPJValid, isCPFValid} from '../helpers/validators';
 import type {CartInterface} from '../models/CartModel';
 import {Cart} from '../models/CartModel';
@@ -14,7 +15,7 @@ export class CartController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async view(req: Request, res: Response) {
@@ -26,7 +27,7 @@ export class CartController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async create(req: Request, res: Response) {

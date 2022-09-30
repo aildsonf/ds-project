@@ -1,4 +1,5 @@
 import type {Request, Response} from 'express';
+import logger from '../helpers/logger';
 import {isCNPJValid} from '../helpers/validators';
 import {Product} from '../models/ProductModel';
 import {Stock, StockInterface} from '../models/StockModel';
@@ -12,7 +13,7 @@ export class StockController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async view(req: Request, res: Response) {
@@ -24,7 +25,7 @@ export class StockController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async create(req: Request, res: Response) {

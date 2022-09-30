@@ -1,4 +1,5 @@
 import type {Request, Response} from 'express';
+import logger from '../helpers/logger';
 import {Product, ProductInterface} from '../models/ProductModel';
 
 class ProductsController {
@@ -9,7 +10,7 @@ class ProductsController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async view(req: Request, res: Response) {
@@ -21,7 +22,7 @@ class ProductsController {
 			}
 
 			return res.status(200).json(payload);
-		});
+		}).clone().catch(logger.error);
 	}
 
 	public async create(req: Request, res: Response) {
