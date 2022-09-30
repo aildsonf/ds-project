@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const Schema = new mongoose.Schema({
 	name: {
@@ -7,11 +7,11 @@ export const Schema = new mongoose.Schema({
 	},
 	barcode: {
 		type: String,
-		required: true
+		required: true,
 	},
 	brand: {
 		type: String,
-		default: ''
+		default: '',
 	},
 	weight: {
 		type: Number,
@@ -23,6 +23,6 @@ export const Schema = new mongoose.Schema({
 	},
 	created: {
 		type: Date,
-		default: Date.now
-	}
-})
+		default: Date.now,
+	},
+});

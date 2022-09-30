@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const Schema = new mongoose.Schema({
 	vendorCnpj: {
@@ -7,14 +7,14 @@ export const Schema = new mongoose.Schema({
 	},
 	productCode: {
 		type: String,
-		required: true
+		required: true,
 	},
 	amount: {
 		type: Number,
-		required: true
+		required: true,
 	},
 	created: {
 		type: Date,
-		default: Date.now
-	}
-})
+		default: Date.now,
+	},
+});

@@ -1,40 +1,35 @@
-import { randomUUID } from "crypto";
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CartContent = new mongoose.Schema({
 	productCode: {
 		type: String,
-		required: true
+		required: true,
 	},
 	amount: {
 		type: Number,
-		required: true
-	}
-})
+		required: true,
+	},
+});
 
 export const Schema = new mongoose.Schema({
-	uuid: {
-		type: String,
-		default: randomUUID()
-	},
 	vendorCnpj: {
 		type: String,
-		required: true
+		required: true,
 	},
 	userCpf: {
 		type: String,
-		required: true
+		required: true,
 	},
 	content: {
 		type: CartContent,
-		required: true
+		required: true,
 	},
 	totalValue: {
 		type: Number,
-		required: true
+		required: true,
 	},
 	created: {
 		type: Date,
-		default: Date.now
-	}
-})
+		default: Date.now,
+	},
+});

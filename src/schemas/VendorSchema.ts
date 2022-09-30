@@ -1,24 +1,24 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const Schema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: true
+		required: true,
 	},
 	cnpj: {
 		type: String,
-		required: true
+		required: true,
 	},
 	address: {
 		type: String,
-		required: true
+		required: true,
 	},
 	contact: {
 		type: String,
-		required: true
+		required: true,
 	},
 	created: {
 		type: Date,
-		default: Date.now
-	}
-})
+		default: Date.now,
+	},
+});

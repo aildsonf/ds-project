@@ -1,14 +1,15 @@
-import * as dotEnv from "dotenv";
+import * as dotEnv from 'dotenv';
 
 dotEnv.config();
 
-if (process.env.PORT == null) {
+const {PORT, DB_PASSWORD} = process.env;
+
+if (PORT === null) {
 	process.exit(1);
 }
 
 export default {
-	PORT: parseInt(process.env.PORT, 10),
-	DB_URI: `mongodb+srv://mongodb:${process.env.DB_PASSWORD}@cluster0.e3ejnzw.mongodb.net/?retryWrites=true&w=majority`
-}
-
+	PORT,
+	DB_URI: `mongodb+srv://mongodb:${DB_PASSWORD}@cluster0.e3ejnzw.mongodb.net/?retryWrites=true&w=majority`,
+};
 

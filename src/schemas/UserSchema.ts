@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const Schema = new mongoose.Schema({
 	name: {
@@ -7,21 +7,21 @@ export const Schema = new mongoose.Schema({
 	},
 	cpf: {
 		type: String,
-		required: true
+		required: true,
 	},
 	password: {
 		type: String,
-		required: true
+		required: true,
 	},
 	type: {
 		type: String,
-		required: true
+		required: true,
 	},
 	vendorCnpj: {
 		type: String,
 	},
 	created: {
 		type: Date,
-		default: Date.now
-	}
-})
+		default: Date.now,
+	},
+});
