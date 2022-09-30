@@ -1,0 +1,32 @@
+{
+    "seller":{
+        "name": "Empresa do Silva",
+        "id": "11.222.3333/4444-55",
+        "address": "Rua Sem Nome, 555 - BAIRRO ALGUM - Recife - PE",
+        "contact": "(81) 99999-8888"
+    },
+    "buyer_id": "111.222.333-44",
+    "products":[
+        {
+            "product_id": 1234,
+            "quantity": 2,
+            "product_name": "Guarda-chuva",
+            "product_value": 11.65,
+            "discount": 0.65,
+            "total_value": 22.65
+        } 
+    ],
+    "payment":{
+        "total_quantity": 2,
+        "products_total": 23.3,
+        "discount": 0.65,
+        "paying_value": 22.65,
+        "payment_type": "Cartão de Débito",
+        "paid_value": 22.65
+    },
+    "status": "Efetuada",
+    "transaction_id": "ddmmyHHmmss",
+    "number_nfce": "111.222.333",
+    "auth_protocol": "012345678912345",
+    "timestamp": "dd/mm/yy HH:mm:ss"  
+}
