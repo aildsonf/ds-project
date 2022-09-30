@@ -16,8 +16,6 @@ const Products: NextPage = () => {
     async function fetchProducts() {
       const response = await fetch('http://localhost:5000/products');
       const data: ProductType[] = await response.json();
-
-      console.log(data);
       
       setProducts(data);
     }
@@ -28,7 +26,13 @@ const Products: NextPage = () => {
   return(
     <div>
       {products.map((product, index) => 
-        <div key={index}>q</div>
+        <div key={index} className='inline-block border-2 border-black'>
+          <p>{product.name}</p>
+          <p>{product.barcode}</p>
+          <p>{product.brand}</p>
+          <p>{product.weight}</p>
+          <p>{product.price}</p>
+        </div>
       )}
     </div>
   )
