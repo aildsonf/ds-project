@@ -1,0 +1,31 @@
+{
+	"env": {
+		"commonjs": true,
+		"es2021": true,
+		"node": true
+	},
+	"extends": "xo",
+	"overrides": [
+		{
+			"extends": [
+				"xo-typescript"
+			],
+			"files": [
+				"*.ts",
+				"*.tsx"
+			],
+			"rules": {
+				"camelcase": "off",
+				"@typescript-eslint/naming-convention": "off",
+				"@typescript-eslint/no-unsafe-assignment": ["warn"],
+				"@typescript-eslint/no-unsafe-call": ["warn"],
+				"@typescript-eslint/restrict-template-expressions": ["warn"]
+			}
+		}
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"project": "./tsconfig.json"
+	},
+	"rules": {}
+}
