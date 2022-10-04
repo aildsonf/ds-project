@@ -95,7 +95,8 @@ class ControladorDePedidos:
         # receiver
         # connects to the broker
         credentials = pika.PlainCredentials('guest', 'guest')
-        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+        # rabbitmq
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
         channel = connection.channel()
 
         # verifica se ja foi declarado, se não cria
@@ -108,7 +109,7 @@ class ControladorDePedidos:
         #     channel.start_consuming()
         # except KeyboardInterrupt:
         #     channel.stop_consuming()
-        for message in channel.consume("Pedidos", inactivity_timeout=1):
+        for message in channel.consume("Pedidos", inactivity_timeout=1, auto_ack=True):
             if self.stopped():
                 break
             if message:
@@ -126,5 +127,7 @@ class ControladorDePedidos:
     def processar_pedido(self, body):
         body = body.decode('utf-8')
         pedido = ast.literal_eval(body)
-        pedido = [pedido[0], pedido[1], "Solicitado"]
+        pedido = [str(pedido[0]), str(pedido[1]), pedido[2], "Solicitado"]
+        # pedido = dict(body)
+        # pedido = [pedido['pedido_id'], pedido['cnpj'], pedido['produtos'], "Solicitado"]
         self._adicionar_pedido(pedido)
