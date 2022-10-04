@@ -1,11 +1,10 @@
 import ast
 import csv
-import random
 import threading
-import time
+import pika
 
 
-# Pedido = [id(int), solicitante(string), [(produto_id(int), quantidade(int)], status, valor]
+# Pedido = [cnpj(int), [(barcode(str), quantidade(int)], status]
 # status = "Solicitado"/"Espera"/"Enviado"
 class ControladorDePedidos:
     def __init__(self):
@@ -92,26 +91,43 @@ class ControladorDePedidos:
     # thread de recebimento de pedidos
     # recebe o pedido e adiciona a lista de pedidos em andamento
     def start(self):
-        while not self.stopped():
-            # ouve
-            # # receiver
-            # # connects to the broker
-            # connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'), )
-            # channel = connection.channel()
-            #
-            # # verifica se ja foi declarado, se não cria
-            # channel.queue_declare(queue="Pedidos", durable=True)
-            #
-            # channel.basic_consume(queue="Pedidos", on_message_callback=callback, auto_ack=True)
-            # channel.start_consuming()
-            #
-            # # stop consuming?
-            # channel.start_consuming()
-            choices = [[123798, "IBN", [(1, 10), (2, 10)], "Solicitado"], [846512, "Ebit", [(1, 50), (2, 80)], "Solicitado"], [641235, "Nikel", [(1, 90), (2, 60)], "Solicitado"], [984132, "Microhard", [(1, 30), (2, 70)], "Solicitado"]]
-            pedido = random.choice(choices)
-            self._adicionar_pedido(pedido)
-            time.sleep(60)
+        # ouve
+        # receiver
+        # connects to the broker
+        credentials = pika.PlainCredentials('guest', 'guest')
+        # rabbitmq
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+        channel = connection.channel()
 
-    # def callback(ch, method, properties, body):
-    #     # trata a string(mensagem) e retorna o pedido
-    #     pass
+        # verifica se ja foi declarado, se não cria
+        channel.exchange_declare(exchange="Distribuidora", exchange_type="direct", durable=True)
+        channel.queue_declare(queue="Pedidos", durable=True)
+        channel.queue_bind(queue="Pedidos", exchange="Distribuidora", routing_key="PeA")
+
+        # channel.basic_consume(queue="Pedidos", on_message_callback=self.callback, auto_ack=True)
+        # try:
+        #     channel.start_consuming()
+        # except KeyboardInterrupt:
+        #     channel.stop_consuming()
+        for message in channel.consume("Pedidos", inactivity_timeout=1, auto_ack=True):
+            if self.stopped():
+                break
+            if message:
+                method, properties, body = message
+                if body:
+                    self.processar_pedido(body)
+
+    # def callback(self, ch, method, properties, body):
+    #     body = body.decode('utf-8')
+    #     pedido = ast.literal_eval(body)
+    #     pedido = [pedido[0], pedido[1], "Solicitado"]
+    #     print(pedido)
+    #     self._adicionar_pedido(pedido)
+
+    def processar_pedido(self, body):
+        body = body.decode('utf-8')
+        pedido = ast.literal_eval(body)
+        pedido = [str(pedido[0]), str(pedido[1]), pedido[2], "Solicitado"]
+        # pedido = dict(body)
+        # pedido = [pedido['pedido_id'], pedido['cnpj'], pedido['produtos'], "Solicitado"]
+        self._adicionar_pedido(pedido)

@@ -1,6 +1,8 @@
 from datetime import datetime
 import functions.utils.numbers as numbers_generation 
 
+import pika
+
 def from_purchase(purchase_details):
 
     timestamp = datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
@@ -43,5 +45,33 @@ def from_purchase(purchase_details):
         "auth_protocol": auth_protocol,
         "timestamp": timestamp
     }
+    
+    produtos = []
+
+    for item in purchase_details['products']:
+        produtos.append(
+            {
+                "barcode": purchase_details['barcode'],
+                "quantity": purchase_details['quantity']
+            }
+        )
+    
+    order = {
+        "pedido_id": transaction_id,
+        "cnpj": purchase_details["buyer_id"],
+        "produtos": produtos
+    }
+
+    order_str = str(order)
+    
+    credentials = pika.PlainCredentials('guest', 'guest')
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+    channel = connection.channel()
+
+    channel.exchange_declare(exchange="Distribuidora", exchange_type="direct", durable=True)
+    channel.queue_declare(queue="Pedidos", durable=True)
+    channel.queue_bind(queue="Pedidos", exchange="Distribuidora", routing_key="PeA")
+    
+    channel.basic_publish(exchange="Distribuidora", routing_key="PeA", body=order_str, properties=pika.BasicProperties(delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE))
 
     return invoice
