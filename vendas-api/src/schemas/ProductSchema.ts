@@ -17,6 +17,10 @@ export const Schema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	amount: {
+		type: Number,
+		default: 0,
+	},
 	price: {
 		type: Number,
 		required: true,

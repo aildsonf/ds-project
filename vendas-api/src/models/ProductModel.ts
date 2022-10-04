@@ -7,6 +7,7 @@ export type ProductInterface = {
 	barcode: string;
 	brand?: string;
 	weight?: number;
+	amount?: number;
 	price: number;
 };
 
